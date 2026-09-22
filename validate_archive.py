@@ -1,6 +1,5 @@
-#!/usr/bin/env python3
 """
-validate_archive.py
+-漫~*'¨¯¨'*·舞~ ꪜꪖꪶⅈᦔꪖ𝕥ꫀ_ꪖ𝕣ᥴꫝⅈꪜꫀ.ρꪗ
 
 Checks hash_archive.csv for integrity:
 - correct header/schema
