@@ -1,0 +1,65 @@
+name: Generate Hash
+
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "How many hashes to generate"
+        required: false
+        default: "1"
+      length:
+        description: "Hash length in characters"
+        required: false
+        default: "4"
+      charset:
+        description: "Character set: hex, base36, or base62"
+        required: false
+        default: "hex"
+      strict:
+        description: "Exclude ambiguous characters (0/O, 1/l/I)"
+        required: false
+        type: boolean
+        default: false
+      prefix:
+        description: "Optional prefix, e.g. usr"
+        required: false
+        default: ""
+      label:
+        description: "Optional label, e.g. project name"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Generate hash(es)
+        run: |
+          STRICT_FLAG=""
+          if [ "${{ github.event.inputs.strict }}" = "true" ]; then
+            STRICT_FLAG="--strict"
+          fi
+          python3 new_hash.py \
+            --count "${{ github.event.inputs.count }}" \
+            --length "${{ github.event.inputs.length }}" \
+            --charset "${{ github.event.inputs.charset }}" \
+            --prefix "${{ github.event.inputs.prefix }}" \
+            --label "${{ github.event.inputs.label }}" \
+            $STRICT_FLAG
+
+      - name: Commit updated archive
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add hash_archive.csv
+          git diff --quiet && git diff --staged --quiet || git commit -m "Add new hash(es) via workflow"
+          git push
