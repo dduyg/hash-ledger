@@ -1,6 +1,5 @@
-#!/usr/bin/env python3
 """
-new_hash.py
+ ❖︎♋︎●︎♓︎♎︎♋︎⧫︎ 🕊 ⋆ 🐚 𝒏𝒆𝒘_𝒉𝒂𝒔𝒉.𝒑𝒚
 
 Generates unique random hashes and logs them to a CSV archive so a
 hash is never generated twice. Supports multiple charsets and
